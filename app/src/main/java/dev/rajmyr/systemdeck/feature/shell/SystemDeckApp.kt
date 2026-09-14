@@ -1,0 +1,343 @@
+package dev.rajmyr.systemdeck.feature.shell
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.viewmodel.compose.viewModel
+import dev.rajmyr.systemdeck.BuildConfig
+import dev.rajmyr.systemdeck.core.model.AppSection
+import dev.rajmyr.systemdeck.feature.diagnostics.DiagnosticsScreen
+import dev.rajmyr.systemdeck.feature.overview.OverviewScreen
+import dev.rajmyr.systemdeck.feature.settings.SettingsScreen
+import dev.rajmyr.systemdeck.ui.theme.DeckBackground
+import dev.rajmyr.systemdeck.ui.theme.DeckBlue
+import dev.rajmyr.systemdeck.ui.theme.DeckBorder
+import dev.rajmyr.systemdeck.ui.theme.DeckCyan
+import dev.rajmyr.systemdeck.ui.theme.DeckMuted
+import dev.rajmyr.systemdeck.ui.theme.DeckSurface
+import dev.rajmyr.systemdeck.ui.theme.DeckSurfaceElevated
+
+@Composable
+fun SystemDeckApp(
+    viewModel: SystemDeckViewModel = viewModel(),
+) {
+    val state by viewModel.uiState.collectAsStateWithLifecycle()
+
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = DeckBackground,
+    ) {
+        BoxWithConstraints(
+    Modifier
+        .fillMaxSize()
+        .systemBarsPadding()
+) {
+            val wide = maxWidth >= 840.dp
+
+            if (wide) {
+                WideShell(
+                    state = state,
+                    onSectionSelected = viewModel::selectSection,
+                    onCompactDensityChanged = viewModel::setCompactDensity,
+                )
+            } else {
+                CompactShell(
+                    state = state,
+                    onSectionSelected = viewModel::selectSection,
+                    onCompactDensityChanged = viewModel::setCompactDensity,
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun WideShell(
+    state: SystemDeckUiState,
+    onSectionSelected: (AppSection) -> Unit,
+    onCompactDensityChanged: (Boolean) -> Unit,
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 28.dp),
+    ) {
+        Sidebar(
+            selected = state.selectedSection,
+            onSectionSelected = onSectionSelected,
+        )
+
+        Column(
+            modifier = Modifier
+                .weight(1f)
+                .fillMaxHeight(),
+        ) {
+            Header(state)
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth()
+                    .padding(18.dp),
+            ) {
+                Content(
+                    state = state,
+                    onCompactDensityChanged = onCompactDensityChanged,
+                )
+            }
+            StatusStrip()
+        }
+    }
+}
+
+@Composable
+private fun CompactShell(
+    state: SystemDeckUiState,
+    onSectionSelected: (AppSection) -> Unit,
+    onCompactDensityChanged: (Boolean) -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 28.dp),
+    ) {
+        Header(state)
+        LazyRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 12.dp, vertical = 8.dp),
+            horizontalArrangement = Arrangement.spacedBy(6.dp),
+        ) {
+            items(AppSection.entries) { section ->
+                SectionTab(
+                    section = section,
+                    selected = section == state.selectedSection,
+                    onClick = { onSectionSelected(section) },
+                )
+            }
+        }
+        Box(
+            modifier = Modifier
+                .weight(1f)
+                .padding(14.dp),
+        ) {
+            Content(
+                state = state,
+                onCompactDensityChanged = onCompactDensityChanged,
+            )
+        }
+        StatusStrip()
+    }
+}
+
+@Composable
+private fun Header(state: SystemDeckUiState) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(58.dp)
+            .border(width = 1.dp, color = DeckBorder)
+            .padding(horizontal = 18.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Column {
+            Text(
+                text = "SYSTEMDECK / ANDROID",
+                style = MaterialTheme.typography.titleMedium,
+                fontFamily = FontFamily.Monospace,
+            )
+            Text(
+                text = BuildConfig.VERSION_NAME,
+                color = DeckMuted,
+                style = MaterialTheme.typography.labelLarge,
+            )
+        }
+        Text(
+            text = "${state.device.model}  •  API ${state.device.sdk}",
+            color = DeckCyan,
+            fontFamily = FontFamily.Monospace,
+            style = MaterialTheme.typography.labelLarge,
+        )
+    }
+}
+
+@Composable
+private fun Sidebar(
+    selected: AppSection,
+    onSectionSelected: (AppSection) -> Unit,
+) {
+    Column(
+        modifier = Modifier
+            .width(212.dp)
+            .fillMaxHeight()
+            .background(DeckSurface)
+            .border(width = 1.dp, color = DeckBorder)
+            .padding(12.dp),
+    ) {
+        Text(
+            text = "NAVIGATION",
+            color = DeckMuted,
+            fontFamily = FontFamily.Monospace,
+            style = MaterialTheme.typography.labelLarge,
+        )
+        Spacer(Modifier.height(10.dp))
+
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+        ) {
+            items(AppSection.entries) { section ->
+                SectionTab(
+                    section = section,
+                    selected = section == selected,
+                    onClick = { onSectionSelected(section) },
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun SectionTab(
+    section: AppSection,
+    selected: Boolean,
+    onClick: () -> Unit,
+) {
+    val background = if (selected) DeckSurfaceElevated else DeckSurface
+    val border = if (selected) DeckBlue else DeckBorder
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(background, RoundedCornerShape(5.dp))
+            .border(1.dp, border, RoundedCornerShape(5.dp))
+            .clickable(onClick = onClick)
+            .padding(horizontal = 10.dp, vertical = 9.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.SpaceBetween,
+    ) {
+        Text(
+            text = if (selected) "> ${section.label}" else "  ${section.label}",
+            fontFamily = FontFamily.Monospace,
+            fontWeight = if (selected) FontWeight.SemiBold else FontWeight.Normal,
+            color = if (selected) DeckCyan else MaterialTheme.colorScheme.onSurface,
+            style = MaterialTheme.typography.labelLarge,
+        )
+        Text(
+            text = section.phase,
+            color = DeckMuted,
+            style = MaterialTheme.typography.labelLarge,
+        )
+    }
+}
+
+@Composable
+private fun Content(
+    state: SystemDeckUiState,
+    onCompactDensityChanged: (Boolean) -> Unit,
+) {
+    when (state.selectedSection) {
+        AppSection.Overview,
+        AppSection.Device -> OverviewScreen(
+            device = state.device,
+            compact = state.compactDensity,
+        )
+
+        AppSection.Diagnostics -> DiagnosticsScreen()
+        AppSection.Settings -> SettingsScreen(
+            compactDensity = state.compactDensity,
+            onCompactDensityChanged = onCompactDensityChanged,
+        )
+
+        else -> PendingCollectorScreen(state.selectedSection)
+    }
+}
+
+@Composable
+private fun PendingCollectorScreen(section: AppSection) {
+    Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
+        Text(
+            text = section.label.uppercase(),
+            style = MaterialTheme.typography.titleLarge,
+        )
+        Text(
+            text = "Collector not connected in Phase 5.",
+            color = DeckMuted,
+            style = MaterialTheme.typography.bodyMedium,
+        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .border(1.dp, DeckBorder, RoundedCornerShape(6.dp))
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.SpaceBetween,
+        ) {
+            Text("capability", fontFamily = FontFamily.Monospace)
+            Text("PENDING / PHASE 6", color = DeckCyan, fontFamily = FontFamily.Monospace)
+        }
+    }
+}
+
+@Composable
+private fun StatusStrip() {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(38.dp)
+            .background(DeckSurface)
+            .border(width = 1.dp, color = DeckBorder)
+            .padding(horizontal = 16.dp),
+        verticalAlignment = Alignment.CenterVertically,
+        horizontalArrangement = Arrangement.spacedBy(18.dp),
+    ) {
+        StatusToken("FOUNDATION", "READY")
+        StatusToken("DATA", "LOCAL")
+        StatusToken("ROOT", "NONE")
+        StatusToken("COLLECTORS", "PHASE 6")
+    }
+}
+
+@Composable
+private fun StatusToken(label: String, value: String) {
+    Row(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
+        Text(
+            label,
+            color = DeckMuted,
+            fontFamily = FontFamily.Monospace,
+            style = MaterialTheme.typography.labelLarge,
+        )
+        Text(
+            value,
+            color = DeckCyan,
+            fontFamily = FontFamily.Monospace,
+            style = MaterialTheme.typography.labelLarge,
+        )
+    }
+}
