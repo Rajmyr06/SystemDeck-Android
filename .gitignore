@@ -8,3 +8,21 @@
 .externalNativeBuild/
 .cxx/
 app/build/
+
+# Release signing material / local secrets
+*.jks
+*.keystore
+*.p12
+keystore.properties
+release-secrets.env
+
+# Local development / migration backups
+.phase6-backups/
+.phase7-backups/
+.phase8-backups/
+.phase9-backups/
+.phase11-backups/
+*.bak
+*.bak-*
+PHASE7_11_NOTES.md
+PHASE7_11_RELEASE_CHECKLIST.md

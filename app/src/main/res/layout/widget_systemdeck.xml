@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/widget_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:background="@drawable/widget_systemdeck_background"
+    android:paddingLeft="16dp"
+    android:paddingRight="12dp"
+    android:paddingTop="9dp"
+    android:paddingBottom="9dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.15"
+        android:orientation="vertical"
+        android:gravity="center_vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SYSTEMDECK"
+            android:textColor="#CDD6F4"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:letterSpacing="0.08" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SNAPSHOT · NO ROOT"
+            android:textColor="#6C7485"
+            android:textSize="9sp"
+            android:fontFamily="sans-serif" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="34dp"
+        android:background="#273344" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.25"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="CPU"
+            android:textColor="#7F849C"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/widget_cpu_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="—"
+            android:textColor="#89B4FA"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/widget_cpu_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="max —"
+            android:textColor="#7F849C"
+            android:textSize="9sp"
+            android:fontFamily="sans-serif" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="34dp"
+        android:background="#273344" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.55"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="MEMORY"
+            android:textColor="#7F849C"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/widget_mem_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="—"
+            android:textColor="#94E2D5"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/widget_mem_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="— / —"
+            android:textColor="#7F849C"
+            android:textSize="9sp"
+            android:fontFamily="sans-serif" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="34dp"
+        android:background="#273344" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.05"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="BATTERY"
+            android:textColor="#7F849C"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/widget_bat_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="—"
+            android:textColor="#A6E3A1"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/widget_bat_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="—"
+            android:textColor="#7F849C"
+            android:textSize="9sp"
+            android:fontFamily="sans-serif" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="34dp"
+        android:background="#273344" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1.15"
+        android:orientation="vertical"
+        android:gravity="center_vertical"
+        android:paddingLeft="14dp"
+        android:paddingRight="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="THERMAL"
+            android:textColor="#7F849C"
+            android:textSize="9sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/widget_temp_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="—"
+            android:textColor="#94E2D5"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/widget_temp_sub"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="—"
+            android:textColor="#7F849C"
+            android:textSize="9sp"
+            android:fontFamily="sans-serif" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="1dp"
+        android:layout_height="34dp"
+        android:background="#273344" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="0.8"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:paddingLeft="10dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SYNC"
+            android:textColor="#7F849C"
+            android:textSize="8sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/widget_updated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="--:--"
+            android:textColor="#CDD6F4"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+
+        <TextView
+            android:id="@+id/widget_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="REFRESH"
+            android:textColor="#89B4FA"
+            android:textSize="8sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium"
+            android:paddingTop="2dp"
+            android:paddingBottom="2dp" />
+    </LinearLayout>
+
+</LinearLayout>
